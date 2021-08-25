@@ -12,16 +12,31 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.119.0",
+    "@types/aws-lambda": "^8.10.82",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
+    "aws-cdk": "1.119.0",
+    "aws-sdk": "^2.972.0",
+    "esbuild": "^0.12.21",
     "jest": "^26.4.2",
     "ts-jest": "^26.2.0",
-    "aws-cdk": "1.119.0",
     "ts-node": "^9.0.0",
     "typescript": "~3.9.7"
   },
   "dependencies": {
+    "@aws-cdk/aws-dynamodb": "^1.119.0",
+    "@aws-cdk/aws-events": "^1.119.0",
+    "@aws-cdk/aws-events-targets": "^1.119.0",
+    "@aws-cdk/aws-iam": "^1.119.0",
+    "@aws-cdk/aws-lambda": "^1.119.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.119.0",
+    "@aws-cdk/aws-logs": "^1.119.0",
+    "@aws-cdk/aws-s3": "^1.119.0",
+    "@aws-cdk/aws-ssm": "^1.119.0",
+    "@aws-cdk/aws-stepfunctions": "^1.119.0",
+    "@aws-cdk/aws-stepfunctions-tasks": "^1.119.0",
     "@aws-cdk/core": "1.119.0",
+    "cdk-ssm-document": "^2.2.1",
     "source-map-support": "^0.5.16"
   }
 }

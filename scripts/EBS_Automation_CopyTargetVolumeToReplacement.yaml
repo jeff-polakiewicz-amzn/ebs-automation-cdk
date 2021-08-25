@@ -1,0 +1,11 @@
+---
+schemaVersion: "2.2"
+description: "Copies all data on target volume to replacement volume."
+mainSteps:
+- action: "aws:runShellScript"
+  name: "script"
+  inputs:
+    runCommand:
+    - >
+      sudo -s
+      dd if=/dev/sdf of=/dev/sdg conv=noerror bs=1M 2>&1 || true

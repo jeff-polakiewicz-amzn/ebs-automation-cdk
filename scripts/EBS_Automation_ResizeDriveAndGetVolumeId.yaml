@@ -1,0 +1,43 @@
+---
+schemaVersion: "2.2"
+description: "Resizes partition on target drive and outputs EBS volume id."
+parameters:
+  DriveLetter:
+    type: "String"
+    description: "Target drive letter with colon"
+    default: "C:"
+mainSteps:
+- action: "aws:runPowerShellScript"
+  name: "script"
+  inputs:
+    runCommand:
+    - >
+      function Get-Physical-Drive {
+
+          param(
+              [string]$DriveLetter
+          )
+      
+          foreach ($disk in Get-CimInstance Win32_Diskdrive) {
+              $diskMetadata = Get-Disk | Where-Object { $_.Number -eq $disk.Index } | Select-Object -First 1
+              $partitions = Get-CimAssociatedInstance -ResultClassName Win32_DiskPartition -InputObject $disk
+      
+              foreach ($partition in $partitions) {
+                  $drives = Get-CimAssociatedInstance -ResultClassName Win32_LogicalDisk -InputObject $partition
+      
+                  foreach ($drive in $drives) {
+                      if ($drive.DeviceID -eq $DriveLetter) {
+                          $Size = $([math]::Floor((($drive.Size - $drive.FreeSpace) * 1.25 / 1GB) + 1))
+                          Resize-Partition -DiskNumber $diskMetadata.Number -PartitionNumber $($partition.Index + 1) -Size $($Size * 1GB) #Cut free space in half, round up to nearest GB
+      
+                          Write-Output "Size: $Size"
+                          Write-Output "Volume: $($diskMetadata.SerialNumber.Trim())" #Contains EBS volume id
+      
+                          exit
+                      }
+                  }
+              }
+          }
+      }
+      
+      Get-Physical-Drive -DriveLetter {{ DriveLetter }}
